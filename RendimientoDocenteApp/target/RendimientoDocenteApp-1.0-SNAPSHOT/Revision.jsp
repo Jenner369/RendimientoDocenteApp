@@ -29,14 +29,16 @@
                     <%
                         Cuestionario Cuestionario = Utils.coalesce((Cuestionario) request.getAttribute("cuestionario"), new Cuestionario());
                         DetalleCuestionario DetalleCuestionario = Utils.coalesce((DetalleCuestionario) request.getAttribute("lista_detallecuestionarios"), new DetalleCuestionario());
-                        DetalleCurso DetalleCurso = Utils.coalesce((DetalleCurso) request.getAttribute("detallecurso"), new DetalleCurso());
+                        DetalleCurso detalleCurso = Utils.coalesce((DetalleCurso) request.getAttribute("detallecurso"), new DetalleCurso());
                         VisitaInopinada Visita = Utils.coalesce((VisitaInopinada) request.getAttribute("visitainopinada"), new VisitaInopinada());
                     %>
-                    <div>
-                        Curso: <%=DetalleCurso.toString()%>
-                        <--!Necesito buscar curso por detalle de curso-->                        
+                    <div class="fs-4 pb-3">
+                        <%=detalleCurso.getCurso().getNombre()%>                       
                     </div>
-
+                    <hr>
+                    <div class="fs-5 pb-3 text-center">
+                        Indicadores de Evaluacion
+                    </div>
                     <table class="table table-secondary table-striped text-center">
                         <thead class="table-dark">
                             <tr>
@@ -78,7 +80,10 @@
 
                         </tbody>
                     </table>
-                    <hr>
+                    <hr> 
+                    <div class="fs-5 pb-3 text-center">
+                        Información de la Evaluacion            
+                    </div>
                     <table class="table table-secondary table-striped text-center">
                         <thead class="table-dark">
                             <tr>
@@ -87,15 +92,17 @@
                                 <th scope="col">Promedio</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Porcentaje de Participacion</th>
+                                <th scope="col">Calificacion Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><%=Cuestionario.getId()%></td>
-                                <td><%=Cuestionario.getFechaHora()%></td>
+                                <td><%=Cuestionario.getFecha()%></td>
                                 <td><%=Cuestionario.getPromedio()%></td>
                                 <td><%=Cuestionario.getEstado()%></td>
                                 <td><%=Cuestionario.getPorcentajeParticipacion()%></td>
+                                <td><%=(Cuestionario.getPromedio() + Visita.getPuntaje())%></td>
                             </tr>
                         </tbody>
                     </table>       

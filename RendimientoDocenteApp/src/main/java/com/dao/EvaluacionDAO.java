@@ -14,10 +14,11 @@ import java.io.IOException;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +43,10 @@ public class EvaluacionDAO {
             cs = con.prepareCall(sql);
             int index = 0;
             //CUESTIONARIO
-            cs.setObject(++index, cuestionario.getFechaHora(), Types.TIMESTAMP);
+            cs.setObject(++index, cuestionario.getFecha(), Types.TIMESTAMP);
             cs.setObject(++index, cuestionario.getEstado(), Types.CHAR);
             //VISITA INOPINADA
-            cs.setObject(++index, visitaInopinada.getFechaHora(), Types.TIMESTAMP);
+            cs.setObject(++index, visitaInopinada.getFecha(), Types.TIMESTAMP);
             cs.setObject(++index, visitaInopinada.getPuntaje(), Types.NUMERIC);
             //DETALLE CUESTIONARIO
             Array inPagoArray = Objects.nonNull(detalleCuestionarios)
@@ -90,20 +91,20 @@ public class EvaluacionDAO {
     public DetalleCuestionario getDetalleCuestionariosByResultado(Integer idResultado) throws SQLException {
         DetalleCuestionario obj = new DetalleCuestionario();
         try {
-            String sql = "select * FROM detalle_cuestionario where cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from resultado where id_resultado = ?);";
+            String sql = "select ROUND((sum(puntaje)/count(*))), ROUND(sum(silabo)/count(*)), ROUND(sum(asistencia)/count(*)), ROUND(sum(respo_social)/count(*)),    ROUND(sum(tutoria)/count(*)),    ROUND(sum(encuesta)/count(*))   from    detalle_cuestionario where cuestionario_id_cuestionario = (select resultado.cuestionario_id_cuestionario from resultado where resultado.id_resultado = ?)";
             con = cn.getConexion();
-            ps = con.prepareCall(sql);
+            ps = con.prepareStatement(sql);
             int index = 0;
             ps.setObject(++index, idResultado, Types.INTEGER);
             rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new DetalleCuestionario();
-                obj.setPuntaje(rs.getObject("puntaje", Integer.class));
-                obj.setSilabo(rs.getObject("silabo", Integer.class));
-                obj.setAsistencia(rs.getObject("asistencia", Integer.class));
-                obj.setRespoSocial(rs.getObject("respo_social", Integer.class));
-                obj.setTutoria(rs.getObject("tutoria", Integer.class));
-                obj.setOtros(rs.getObject("otros", Integer.class));
+                obj.setPuntaje(rs.getObject(1, Integer.class));
+                obj.setSilabo(rs.getObject(2, Integer.class));
+                obj.setAsistencia(rs.getObject(3, Integer.class));
+                obj.setRespoSocial(rs.getObject(4, Integer.class));
+                obj.setTutoria(rs.getObject(5, Integer.class));
+                obj.setOtros(rs.getObject(6, Integer.class));
             }
             ps.close();
             con.close();
@@ -116,7 +117,7 @@ public class EvaluacionDAO {
     public VisitaInopinada getVisitaInopinadaByResultado(Integer idResultado) throws SQLException {
         VisitaInopinada obj = new VisitaInopinada();
         try {
-            String sql = "SELECT * FROM visita_inopinada WHERE id_visita = (select id_visita from resultado where id_resultado = ?);";
+            String sql = "SELECT * FROM visita_inopinada WHERE id_visita = (select visita_inopinada_id_visita from resultado where id_resultado = ?)";
             con = cn.getConexion();
             ps = con.prepareStatement(sql);
             int index = 0;
@@ -126,7 +127,7 @@ public class EvaluacionDAO {
                 obj = new VisitaInopinada();
                 obj.setId(rs.getObject("id_visita", Integer.class));
                 obj.setPuntaje(rs.getObject("puntaje", Integer.class));
-                obj.setFechaHora(rs.getObject("fecha_hora", Timestamp.class));
+                obj.setFecha(rs.getObject("fecha", Date.class));
             }
             ps.close();
             con.close();
@@ -139,9 +140,9 @@ public class EvaluacionDAO {
     public DetalleCurso getDetalleCursoByResultado(Integer idResultado) throws SQLException {
         DetalleCurso obj = new DetalleCurso();
         try {
-            String sql = "select * FROM detalle_curso where cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from resultado where id_resultado = ?);";
+            String sql = "select * FROM detalle_curso inner join curso on detalle_curso.curso_id_curso = curso.id_curso where id_d_curso = (select detalle_curso_id_d_curso from cuestionario where id_cuestionario = (SELECT cuestionario_id_cuestionario from resultado where id_resultado = ?) )";
             con = cn.getConexion();
-            ps = con.prepareCall(sql);
+            ps = con.prepareStatement(sql);
             int index = 0;
             ps.setObject(++index, idResultado, Types.INTEGER);
             rs = ps.executeQuery();
@@ -151,8 +152,8 @@ public class EvaluacionDAO {
                 obj.setMatriculados(rs.getObject("matriculados", Integer.class));
                 obj.setCiclo(rs.getObject("ciclo", Integer.class));
                 obj.setCurso(new Curso());
-                obj.getCurso().setId(rs.getObject("id_curso", Integer.class));
-                obj.getCurso().setNombre(rs.getObject("nombre_curso", String.class));
+                obj.getCurso().setId(rs.getObject("curso_id_curso", Integer.class));
+                obj.getCurso().setNombre(rs.getObject("nombre", String.class));
             }
             ps.close();
             con.close();
@@ -166,7 +167,7 @@ public class EvaluacionDAO {
         List<Resultado> resultados = new ArrayList<Resultado>();
         Resultado obj;
         try {
-            String sql = "SELECT * from resultado where (cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from detalle_curso  where dc.id_docente = ?));";
+            String sql = "SELECT * from resultado where (cuestionario_id_cuestionario = (select id_cuestionario from cuestionario where detalle_curso_id_d_curso = (select id_d_curso from detalle_curso where docente_id_docente = ? ORDER BY docente_id_docente FETCH FIRST 1 ROWS ONLY) FETCH FIRST 1 ROWS ONLY))";
             con = cn.getConexion();
             ps = con.prepareStatement(sql);
             int index = 0;
@@ -175,13 +176,14 @@ public class EvaluacionDAO {
             while (rs.next()) {
                 obj = new Resultado();
                 obj.setId(rs.getObject("id_resultado", Integer.class));
-                obj.setFechaHora(rs.getObject("fecha_hora", Timestamp.class));
+                obj.setFecha(rs.getObject("fecha", Date.class));
                 obj.setNota(rs.getObject("nota", Integer.class));
                 resultados.add(obj);
             }
             ps.close();
             con.close();
         } catch (SQLException e) {
+            System.out.println(e);
             throw e;
         }
         return resultados;
@@ -203,6 +205,7 @@ public class EvaluacionDAO {
                 obj.setApellidoPaterno(rs.getObject("ape_paterno", String.class));
                 obj.setApellidoMaterno(rs.getObject("ape_materno", String.class));
                 obj.setEstado(rs.getObject("estado", String.class));
+                docentes.add(obj);
             }
             ps.close();
             con.close();
@@ -215,16 +218,16 @@ public class EvaluacionDAO {
     public Cuestionario getCuestionarioByResultado(Integer idResultado) throws SQLException {
         Cuestionario obj = new Cuestionario();
         try {
-            String sql = "select * FROM cuestionario where id_cuestionario = (select cuestionario_id_cuestionario from resultado  where id_resultado = ?);";
+            String sql = "select * FROM cuestionario where id_cuestionario = (select cuestionario_id_cuestionario from resultado  where id_resultado = ?)";
             con = cn.getConexion();
-            ps = con.prepareCall(sql);
+            ps = con.prepareStatement(sql);
             int index = 0;
             ps.setObject(++index, idResultado, Types.INTEGER);
             rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new Cuestionario();
                 obj.setId(rs.getObject("id_cuestionario", Integer.class));
-                obj.setFechaHora(rs.getObject("fecha_hora", Timestamp.class));
+                obj.setFecha(rs.getObject("fecha", Date.class));
                 obj.setEstado(rs.getObject("estado", String.class));
                 obj.setPromedio(rs.getObject("promedio", Double.class));
                 obj.setPorcentajeParticipacion(rs.getObject("porcentaje_participacion", Double.class));

@@ -39,7 +39,7 @@ background-size: cover; background-position: center center; background-attachmen
                         <% for (int i = 0; i < Resultados.size(); i++) { %>
                         <tr>
                             <td><%=Resultados.get(i).getId()%></td>
-                            <td><%=Resultados.get(i).getFechaHora().toString()%></td>
+                            <td><%=Resultados.get(i).getFecha().toString()%></td>
                             <td><%=Resultados.get(i).getNota()%></td>
                             <td>
                                 <a class="btn btn-dark" href="Servlet_Evaluacion?tipo_consulta=obtener_cuestionario&idResultado=<%=Resultados.get(i).getId()%>" target="_black">Detalles</a>
