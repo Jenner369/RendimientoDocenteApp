@@ -107,14 +107,14 @@ public class EvaluacionDAO {
         return obj;
     }
     
-    public DetalleCurso getDetalleCursoByResultado(Resultado resultado) throws SQLException {
+    public DetalleCurso getDetalleCursoByResultado(Integer idResultado) throws SQLException {
         DetalleCurso obj = new DetalleCurso();
         try {
             String sql = "{ ? = call OBTENER_DETALLECURSO_BY_RESULTADO(?)}";
             con = cn.getConexion();
             cs = con.prepareCall(sql);
             int index = 0;
-            cs.setObject(++index, resultado.getId(), Types.INTEGER);
+            cs.setObject(++index, idResultado, Types.INTEGER);
             rs = cs.executeQuery();
             while (rs.next()) {
                 obj = new DetalleCurso();

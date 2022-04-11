@@ -101,7 +101,7 @@ public class Servlet_Evaluacion extends HttpServlet {
             case "obtener_detallecurso":
                     try {
                 EvaluacionDAO ev = new EvaluacionDAO();
-                request.setAttribute("detallecurso", ev.getDetalleCuestionariosByResultado((Integer) request.getAttribute("idResultado")));
+                request.setAttribute("detallecurso", ev.getDetalleCursoByResultado((Integer) request.getAttribute("idResultado")));
             } catch (Exception e) {
             }
             dispatcher = request.getRequestDispatcher("/index.html");
