@@ -1,6 +1,6 @@
-package com.jenner369.rendimientodocenteapp.bean;
+package com.bean;
 
-import com.jenner369.rendimientodocenteapp.udt.DetalleCuestionarioUDT;
+import com.udt.DetalleCuestionarioUDT;
 
 public class DetalleCuestionario {
     private Integer id_d_cuestionario;

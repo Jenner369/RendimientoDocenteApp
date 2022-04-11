@@ -1,4 +1,4 @@
-package com.jenner369.rendimientodocenteapp.config;
+package com.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

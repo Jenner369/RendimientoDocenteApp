@@ -1,6 +1,6 @@
-package com.jenner369.rendimientodocenteapp.test;
+package com.test;
 
-import com.jenner369.rendimientodocenteapp.config.cnx;
+import com.config.cnx;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

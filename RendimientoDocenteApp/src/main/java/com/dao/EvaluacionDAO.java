@@ -1,14 +1,14 @@
-package com.jenner369.rendimientodocenteapp.dao;
+package com.dao;
 
-import com.jenner369.rendimientodocenteapp.bean.Cuestionario;
-import com.jenner369.rendimientodocenteapp.bean.Curso;
-import com.jenner369.rendimientodocenteapp.bean.DetalleCuestionario;
-import com.jenner369.rendimientodocenteapp.bean.DetalleCurso;
-import com.jenner369.rendimientodocenteapp.bean.Docente;
-import com.jenner369.rendimientodocenteapp.bean.Resultado;
-import com.jenner369.rendimientodocenteapp.bean.VisitaInopinada;
-import com.jenner369.rendimientodocenteapp.config.cnx;
-import com.jenner369.rendimientodocenteapp.udt.DetalleCuestionarioUDT;
+import com.bean.Cuestionario;
+import com.bean.Curso;
+import com.bean.DetalleCuestionario;
+import com.bean.DetalleCurso;
+import com.bean.Docente;
+import com.bean.Resultado;
+import com.bean.VisitaInopinada;
+import com.config.cnx;
+import com.udt.DetalleCuestionarioUDT;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.CallableStatement;

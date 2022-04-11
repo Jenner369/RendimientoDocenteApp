@@ -1,4 +1,4 @@
-package com.jenner369.rendimientodocenteapp.bean;
+package com.bean;
 
 public class Curso {
     private Integer id;

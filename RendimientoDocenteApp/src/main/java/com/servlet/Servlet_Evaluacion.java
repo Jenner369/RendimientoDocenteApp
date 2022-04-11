@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.jenner369.rendimientodocenteapp.servlet;
+package com.servlet;
 
-import com.jenner369.rendimientodocenteapp.bean.Cuestionario;
-import com.jenner369.rendimientodocenteapp.bean.DetalleCuestionario;
-import com.jenner369.rendimientodocenteapp.bean.DetalleCurso;
-import com.jenner369.rendimientodocenteapp.bean.Docente;
-import com.jenner369.rendimientodocenteapp.bean.Resultado;
-import com.jenner369.rendimientodocenteapp.bean.VisitaInopinada;
-import com.jenner369.rendimientodocenteapp.dao.EvaluacionDAO;
-import com.jenner369.rendimientodocenteapp.udt.DetalleCuestionarioUDT;
+import com.bean.Cuestionario;
+import com.bean.DetalleCuestionario;
+import com.bean.DetalleCurso;
+import com.bean.Docente;
+import com.bean.Resultado;
+import com.bean.VisitaInopinada;
+import com.dao.EvaluacionDAO;
+import com.udt.DetalleCuestionarioUDT;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;

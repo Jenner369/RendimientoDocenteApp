@@ -1,4 +1,4 @@
-package com.jenner369.rendimientodocenteapp.udt;
+package com.udt;
 
 import java.sql.Date;
 import java.sql.JDBCType;
