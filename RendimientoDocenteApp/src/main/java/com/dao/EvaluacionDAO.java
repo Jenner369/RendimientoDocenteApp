@@ -5,6 +5,7 @@ import com.bean.Curso;
 import com.bean.DetalleCuestionario;
 import com.bean.DetalleCurso;
 import com.bean.Docente;
+import com.bean.NivelRendimiento;
 import com.bean.Resultado;
 import com.bean.VisitaInopinada;
 import com.config.cnx;
@@ -167,7 +168,7 @@ public class EvaluacionDAO {
         List<Resultado> resultados = new ArrayList<Resultado>();
         Resultado obj;
         try {
-            String sql = "SELECT * from resultado where (cuestionario_id_cuestionario = (select id_cuestionario from cuestionario where detalle_curso_id_d_curso = (select id_d_curso from detalle_curso where docente_id_docente = ? ORDER BY docente_id_docente FETCH FIRST 1 ROWS ONLY) FETCH FIRST 1 ROWS ONLY))";
+            String sql = "SELECT * from resultado inner join nivel_rendimiento on resultado.nota between nivel_rendimiento.puntaje_minimo and nivel_rendimiento.puntaje_maximo where (cuestionario_id_cuestionario = (select id_cuestionario from cuestionario where detalle_curso_id_d_curso = (select id_d_curso from detalle_curso where docente_id_docente = ? ORDER BY docente_id_docente FETCH FIRST 1 ROWS ONLY) FETCH FIRST 1 ROWS ONLY))";
             con = cn.getConexion();
             ps = con.prepareStatement(sql);
             int index = 0;
@@ -178,6 +179,8 @@ public class EvaluacionDAO {
                 obj.setId(rs.getObject("id_resultado", Integer.class));
                 obj.setFecha(rs.getObject("fecha", Date.class));
                 obj.setNota(rs.getObject("nota", Integer.class));
+                obj.setNivelRendimiento(new NivelRendimiento());
+                obj.getNivelRendimiento().setNombre(rs.getObject("nombre", String.class));
                 resultados.add(obj);
             }
             ps.close();
