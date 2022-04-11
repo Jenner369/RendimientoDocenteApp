@@ -1,5 +1,10 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="DA.DAO_Cliente"%>
 <!DOCTYPE html>
-<html lang="en">
+<%
+    List<Beans_Resultado> Resultados = OpcionesResultado.BuscarResultadosPorDocente();
+%>
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -24,16 +29,22 @@ background-size: cover; background-position: center center; background-attachmen
                             <th scope="col">Numero</th>
                             <th scope="col">Fecha</th>
                             <th scope="col">Resultado</th>
-                            <th scope="col">Revisión</th>
+                            <th scope="col">RevisiÃ³n</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <% for (int i = 0; i < Resultados.size(); i++) { %>
                         <tr>
-                            <th scope="row">1</th>
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td>
+                                <a class="btn btn-dark" href="Revision.jsp" target="_black">Detalles</a>
+                                <a class="btn btn-dark" href="Cliente/ReportesDeHistorial.jsp?codigo=<%=Mascotas.get(i).getID()%>" target="_black">Ver Historial</a>
+                            </td>
+                            
                         </tr>
+                        <%}%>
                     </tbody>
                 </table>
             </div>

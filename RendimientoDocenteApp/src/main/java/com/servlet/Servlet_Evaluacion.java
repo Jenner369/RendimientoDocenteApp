@@ -69,7 +69,7 @@ public class Servlet_Evaluacion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String tipo = (String)request.getParameter("tipo_consulta");
-         RequestDispatcher dispatcher;
+        RequestDispatcher dispatcher;
         switch (tipo) {
             case "listar_docentes":
                 try {
