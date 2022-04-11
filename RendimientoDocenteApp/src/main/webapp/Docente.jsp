@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="com.bean.Docente"%>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -26,6 +28,10 @@ background-size: cover; background-position: center center; background-attachmen
                         </tr>
                     </thead>
                     <tbody>
+                        <%
+                            List<Docente> Docentes = (List<Docente>)request.getAttribute("lista_docentes");
+                        %>
+                        
                         <% for (int i = 0; i < Docentes.size(); i++) { %>
                         <tr>
                             <td>Docente N°01</td>
