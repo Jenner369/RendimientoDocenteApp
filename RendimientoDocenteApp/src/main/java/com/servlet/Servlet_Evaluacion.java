@@ -68,7 +68,7 @@ public class Servlet_Evaluacion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String tipo = (String)request.getAttribute("tipo_consulta");
+        String tipo = (String)request.getParameter("tipo_consulta");
          RequestDispatcher dispatcher;
         switch (tipo) {
             case "listar_docentes":
@@ -86,7 +86,7 @@ public class Servlet_Evaluacion extends HttpServlet {
                     request.setAttribute("lista_resultados", ev.listarResultados((Integer)request.getAttribute("idDocente")));
                 } catch (Exception e) {
                 }
-                dispatcher = request.getRequestDispatcher("/index.html");  
+                dispatcher = request.getRequestDispatcher("/index.html");
                 dispatcher.forward(request, response); 
                 break;
             case "obtener_cuestionario":
