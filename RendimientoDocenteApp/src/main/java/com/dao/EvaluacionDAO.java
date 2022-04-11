@@ -59,9 +59,36 @@ public class EvaluacionDAO {
             throw e;
         }
     }
-    public List<DetalleCuestionario> getDetalleCuestionariosByResultado(Integer idResultado) throws SQLException {
-        List<DetalleCuestionario> detalleCuestionarios = new ArrayList<DetalleCuestionario>();
-        DetalleCuestionario obj;
+//    public List<DetalleCuestionario> getDetalleCuestionariosByResultado(Integer idResultado) throws SQLException {
+//        List<DetalleCuestionario> detalleCuestionarios = new ArrayList<DetalleCuestionario>();
+//        DetalleCuestionario obj;
+//        try {
+//            String sql = "select * FROM detalle_cuestionario where cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from resultado where id_resultado = ?);";
+//            con = cn.getConexion();
+//            ps = con.prepareCall(sql);
+//            int index = 0;
+//            ps.setObject(++index, idResultado, Types.INTEGER);
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                obj = new DetalleCuestionario();
+//                obj.setPuntaje(rs.getObject("puntaje", Integer.class));
+//                obj.setSilabo(rs.getObject("silabo", Integer.class));
+//                obj.setAsistencia(rs.getObject("asistencia", Integer.class));
+//                obj.setRespoSocial(rs.getObject("respo_social", Integer.class));
+//                obj.setTutoria(rs.getObject("tutoria", Integer.class));
+//                obj.setOtros(rs.getObject("otros", Integer.class));
+//                detalleCuestionarios.add(obj);
+//            }
+//            ps.close();
+//            con.close();
+//        } catch (SQLException e) {
+//            throw e;
+//        }
+//        return detalleCuestionarios;
+//    }
+    
+    public DetalleCuestionario getDetalleCuestionariosByResultado(Integer idResultado) throws SQLException {
+        DetalleCuestionario obj = new DetalleCuestionario();
         try {
             String sql = "select * FROM detalle_cuestionario where cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from resultado where id_resultado = ?);";
             con = cn.getConexion();
@@ -77,14 +104,13 @@ public class EvaluacionDAO {
                 obj.setRespoSocial(rs.getObject("respo_social", Integer.class));
                 obj.setTutoria(rs.getObject("tutoria", Integer.class));
                 obj.setOtros(rs.getObject("otros", Integer.class));
-                detalleCuestionarios.add(obj);
             }
             ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
         }
-        return detalleCuestionarios;
+        return obj;
     }
     
     public VisitaInopinada getVisitaInopinadaByResultado(Integer idResultado) throws SQLException {

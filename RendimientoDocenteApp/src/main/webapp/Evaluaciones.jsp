@@ -15,7 +15,7 @@
     <title>Tus Evaluaciones</title>
 </head>
 
-<body style="background-image: url(https://images.unsplash.com/photo-1489110804417-276c3f517515?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80); 
+<body style="background-image: url(https://images.unsplash.com/photo-1606127195437-d12564b184e9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80); 
 background-size: cover; background-position: center center; background-attachment: fixed;">
     <div class="container">
         <div class="card my-5">
