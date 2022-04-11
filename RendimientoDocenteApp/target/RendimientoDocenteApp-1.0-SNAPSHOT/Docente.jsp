@@ -1,3 +1,5 @@
+<%@page import="com.util.Utils"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.bean.Docente"%>
 <!DOCTYPE html>
@@ -17,26 +19,26 @@ background-size: cover; background-position: center center; background-attachmen
     <div class="container">
         <div class="card my-5">
             <div class="card-header display-6  text-center">
-                Evaluaciones
+                Docentes
             </div>
             <div class="card-body">
                 <table class="table table-secondary table-striped text-center">
                     <thead class="table-dark">
                         <tr>
-                            <th scope="col">Tipo</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">Calificacion</th>
                         </tr>
                     </thead>
                     <tbody>
                         <%
-                            List<Docente> Docentes = (List<Docente>)request.getAttribute("lista_docentes");
+                            List<Docente> Docentes = Utils.coalesce((List<Docente>)request.getAttribute("lista_resultados"), new ArrayList<Docente>());
                         %>
                         
                         <% for (int i = 0; i < Docentes.size(); i++) { %>
                         <tr>
-                            <td>Docente N°01</td>
+                            <td><%=Docentes.get(i)%></td>
                             <td>
-                                <a class="btn btn-dark" href="<%=request.getContextPath()%>/Evaluaciones.jsp?cod=<%=Docentes.get(i).getId()%>" target="_black">Detalles</a>
+                                <a class="btn btn-dark" href="Servlet_Evaluacion?tipo_consulta=listar_resultados&idDocente=<%=Docentes.get(i).getId()%>" target="_black">Evaluaciones</a>
                             </td>
                         </tr>
                         <%}%>

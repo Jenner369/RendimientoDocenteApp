@@ -95,7 +95,7 @@ public class Servlet_Evaluacion extends HttpServlet {
                 request.setAttribute("cuestionario", ev.getCuestionarioByResultado((Integer) request.getAttribute("idResultado")));
             } catch (Exception e) {
             }
-            dispatcher = request.getRequestDispatcher("/Cuestionario.jsp");
+            dispatcher = request.getRequestDispatcher("/Revision.jsp");
             dispatcher.forward(request, response);
             break;
             case "obtener_detallecurso":

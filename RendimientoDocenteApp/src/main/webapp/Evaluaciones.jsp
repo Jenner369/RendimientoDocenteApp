@@ -1,9 +1,9 @@
+<%@page import="com.util.Utils"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.bean.Resultado"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="DA.DAO_Cliente"%>
 <!DOCTYPE html>
-<%
-    List<Beans_Resultado> Resultados = OpcionesResultado.BuscarResultadosPorDocente();
-%>
 <html lang="es">
 
 <head>
@@ -29,20 +29,21 @@ background-size: cover; background-position: center center; background-attachmen
                             <th scope="col">Numero</th>
                             <th scope="col">Fecha</th>
                             <th scope="col">Resultado</th>
-                            <th scope="col">RevisiÃ³n</th>
+                            <th scope="col">Revisión</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <%
+                            List<Resultado> Resultados = Utils.coalesce((List<Resultado>)request.getAttribute("lista_resultados"), new ArrayList<Resultado>());
+                        %>
                         <% for (int i = 0; i < Resultados.size(); i++) { %>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><%=Resultados.get(i).getId()%></td>
+                            <td><%=Resultados.get(i).getFechaHora().toString()%></td>
+                            <td><%=Resultados.get(i).getNota()%></td>
                             <td>
-                                <a class="btn btn-dark" href="Revision.jsp" target="_black">Detalles</a>
-                                <a class="btn btn-dark" href="Cliente/ReportesDeHistorial.jsp?codigo=<%=Mascotas.get(i).getID()%>" target="_black">Ver Historial</a>
+                                <a class="btn btn-dark" href="Servlet_Evaluacion?tipo_consulta=obtener_cuestionario&idResultado=<%=Resultados.get(i).getId()%>" target="_black">Detalles</a>
                             </td>
-                            
                         </tr>
                         <%}%>
                     </tbody>

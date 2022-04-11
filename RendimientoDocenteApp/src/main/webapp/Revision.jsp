@@ -1,3 +1,5 @@
+<%@page import="com.util.Utils"%>
+<%@page import="com.bean.Cuestionario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,10 +29,12 @@ background-size: cover; background-position: center center; background-attachmen
                         </tr>
                     </thead>
                     <tbody>
-
+                        <%
+                            Cuestionario Cuestionario = Utils.coalesce((Cuestionario)request.getAttribute("cuestionario"), new Cuestionario());
+                        %>
                         <tr>
                             <td>Entrega del silabo</td>
-                            <td><% %></td>
+                            <td></td>
                         </tr>
 
                         <tr>
