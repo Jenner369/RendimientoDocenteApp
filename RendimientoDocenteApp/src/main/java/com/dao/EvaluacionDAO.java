@@ -9,10 +9,12 @@ import com.bean.Resultado;
 import com.bean.VisitaInopinada;
 import com.config.cnx;
 import com.udt.DetalleCuestionarioUDT;
+import com.util.Utils;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -25,6 +27,7 @@ public class EvaluacionDAO {
     cnx cn;
     Connection con;
     CallableStatement cs;
+    PreparedStatement ps;
     private ResultSet rs;
 
     public EvaluacionDAO() throws SQLException, IOException {
@@ -34,7 +37,7 @@ public class EvaluacionDAO {
     //procediminetos almacenados
     public void RegistrarEvaluacion(DetalleCuestionarioUDT[] detalleCuestionarios, Cuestionario cuestionario, VisitaInopinada visitaInopinada) throws SQLException {
         try {
-            String sql = "{ ? = call REGISTRAR_EVALUACION(?, ?, ?, ?, ?)}";
+            String sql = "{ ? = call REGISTRAR_EVALUACION(?, ?, ?, ?, ?, ?)}";
             con = cn.getConexion();
             cs = con.prepareCall(sql);
             int index = 0;
@@ -60,12 +63,12 @@ public class EvaluacionDAO {
         List<DetalleCuestionario> detalleCuestionarios = new ArrayList<DetalleCuestionario>();
         DetalleCuestionario obj;
         try {
-            String sql = "{ ? = call OBTENER_DETALLECUESTIONARIOS_BY_RESULTADO(?, ?, ?, ?, ?)}";
+            String sql = "select * FROM detalle_cuestionario where cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from resultado where id_resultado = ?);";
             con = cn.getConexion();
-            cs = con.prepareCall(sql);
+            ps = con.prepareCall(sql);
             int index = 0;
-            cs.setObject(++index, idResultado, Types.INTEGER);
-            rs = cs.executeQuery();
+            ps.setObject(++index, idResultado, Types.INTEGER);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new DetalleCuestionario();
                 obj.setPuntaje(rs.getObject("puntaje", Integer.class));
@@ -76,7 +79,7 @@ public class EvaluacionDAO {
                 obj.setOtros(rs.getObject("otros", Integer.class));
                 detalleCuestionarios.add(obj);
             }
-            cs.close();
+            ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
@@ -87,19 +90,19 @@ public class EvaluacionDAO {
     public VisitaInopinada getVisitaInopinadaByResultado(Integer idResultado) throws SQLException {
         VisitaInopinada obj = new VisitaInopinada();
         try {
-            String sql = "{ ? = call OBTENER_VISITAINOPINADA_BY_RESULTADO(?)}";
+            String sql = "SELECT * FROM visita_inopinada WHERE id_visita = (select id_visita from resultado where id_resultado = ?);";
             con = cn.getConexion();
-            cs = con.prepareCall(sql);
+            ps = con.prepareStatement(sql);
             int index = 0;
-            cs.setObject(++index, idResultado, Types.INTEGER);
-            rs = cs.executeQuery();
+            ps.setObject(++index, idResultado, Types.INTEGER);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new VisitaInopinada();
                 obj.setId(rs.getObject("id_visita", Integer.class));
                 obj.setPuntaje(rs.getObject("puntaje", Integer.class));
                 obj.setFechaHora(rs.getObject("fecha_hora", Timestamp.class));
             }
-            cs.close();
+            ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
@@ -110,12 +113,12 @@ public class EvaluacionDAO {
     public DetalleCurso getDetalleCursoByResultado(Integer idResultado) throws SQLException {
         DetalleCurso obj = new DetalleCurso();
         try {
-            String sql = "{ ? = call OBTENER_DETALLECURSO_BY_RESULTADO(?)}";
+            String sql = "select * FROM detalle_curso where cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from resultado where id_resultado = ?);";
             con = cn.getConexion();
-            cs = con.prepareCall(sql);
+            ps = con.prepareCall(sql);
             int index = 0;
-            cs.setObject(++index, idResultado, Types.INTEGER);
-            rs = cs.executeQuery();
+            ps.setObject(++index, idResultado, Types.INTEGER);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new DetalleCurso();
                 obj.setId(rs.getObject("id_d_curso", Integer.class));
@@ -125,7 +128,7 @@ public class EvaluacionDAO {
                 obj.getCurso().setId(rs.getObject("id_curso", Integer.class));
                 obj.getCurso().setNombre(rs.getObject("nombre_curso", String.class));
             }
-            cs.close();
+            ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
@@ -137,12 +140,12 @@ public class EvaluacionDAO {
         List<Resultado> resultados = new ArrayList<Resultado>();
         Resultado obj;
         try {
-            String sql = "{ ? = call LISTAR_RESULTADOS(?)}";
+            String sql = "SELECT * from resultado where (cuestionario_id_cuestionario = (select cuestionario_id_cuestionario from detalle_curso  where dc.id_docente = ?));";
             con = cn.getConexion();
-            cs = con.prepareCall(sql);
+            ps = con.prepareStatement(sql);
             int index = 0;
-            cs.setObject(++index, idDocente, Types.INTEGER);
-            rs = cs.executeQuery();
+            ps.setObject(++index, idDocente, Types.INTEGER);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new Resultado();
                 obj.setId(rs.getObject("id_resultado", Integer.class));
@@ -150,7 +153,7 @@ public class EvaluacionDAO {
                 obj.setNota(rs.getObject("nota", Integer.class));
                 resultados.add(obj);
             }
-            cs.close();
+            ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
@@ -163,10 +166,10 @@ public class EvaluacionDAO {
         List<Docente> docentes = new ArrayList<Docente>();
         Docente obj;
         try {
-            String sql = "{ ? = call LISTAR_DOCENTES()}";
+            String sql = "select * from docente";
             con = cn.getConexion();
-            cs = con.prepareCall(sql);
-            rs = cs.executeQuery();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new Docente();
                 obj.setId(rs.getObject("id_docente", Integer.class));
@@ -175,7 +178,7 @@ public class EvaluacionDAO {
                 obj.setApellidoMaterno(rs.getObject("ape_materno", String.class));
                 obj.setEstado(rs.getObject("estado", String.class));
             }
-            cs.close();
+            ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
@@ -186,12 +189,12 @@ public class EvaluacionDAO {
     public Cuestionario getCuestionarioByResultado(Integer idResultado) throws SQLException {
         Cuestionario obj = new Cuestionario();
         try {
-            String sql = "{ ? = call OBTENER_CUESTIONARIO_BY_RESULTADO(?)}";
+            String sql = "select * FROM cuestionario where id_cuestionario = (select cuestionario_id_cuestionario from resultado  where id_resultado = ?);";
             con = cn.getConexion();
-            cs = con.prepareCall(sql);
+            ps = con.prepareCall(sql);
             int index = 0;
-            cs.setObject(++index, idResultado, Types.INTEGER);
-            rs = cs.executeQuery();
+            ps.setObject(++index, idResultado, Types.INTEGER);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 obj = new Cuestionario();
                 obj.setId(rs.getObject("id_cuestionario", Integer.class));
@@ -200,7 +203,7 @@ public class EvaluacionDAO {
                 obj.setPromedio(rs.getObject("promedio", Double.class));
                 obj.setPorcentajeParticipacion(rs.getObject("porcentaje_participacion", Double.class));
             }
-            cs.close();
+            ps.close();
             con.close();
         } catch (SQLException e) {
             throw e;
