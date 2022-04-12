@@ -1,11 +1,11 @@
 package com.bean;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 public class Resultado {
     private Integer id;
     private Integer nota;
-    private Timestamp fechaHora;
+    private Date fecha;
     private Cuestionario cuestionario;
     private NivelRendimiento nivelRendimiento;
     private VisitaInopinada visitaInopinada;
@@ -26,12 +26,12 @@ public class Resultado {
         this.nota = nota;
     }
 
-    public Timestamp getFechaHora() {
-        return fechaHora;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setFechaHora(Timestamp fechaHora) {
-        this.fechaHora = fechaHora;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public Cuestionario getCuestionario() {

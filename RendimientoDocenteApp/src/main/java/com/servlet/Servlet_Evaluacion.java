@@ -81,24 +81,28 @@ public class Servlet_Evaluacion extends HttpServlet {
             dispatcher.forward(request, response);
             break;
             case "listar_resultados":
-                try {
-                EvaluacionDAO ev = new EvaluacionDAO();
-                request.setAttribute("lista_resultados", ev.listarResultados((Integer) request.getAttribute("idDocente")));
+            try {
+                EvaluacionDAO ev = new EvaluacionDAO();    
+                request.setAttribute("lista_resultados", ev.listarResultados(Integer.valueOf(request.getParameter("idDocente"))));
             } catch (Exception e) {
             }
-            dispatcher = request.getRequestDispatcher("/Resultados.jsp");
+            dispatcher = request.getRequestDispatcher("/Evaluaciones.jsp");
             dispatcher.forward(request, response);
             break;
             case "obtener_cuestionario":
-                    try {
+                try {
                 EvaluacionDAO ev = new EvaluacionDAO();
-                int id = (Integer) request.getAttribute("idResultado");
-                request.setAttribute("cuestionario", ev.getCuestionarioByResultado(id));
+                Integer id = Integer.valueOf(request.getParameter("idResultado")) ;
                 request.setAttribute("lista_detallecuestionarios", ev.getDetalleCuestionariosByResultado(id));
-                request.setAttribute("detallecurso", ev.getDetalleCursoByResultado(id));
-                request.setAttribute("visitainopinada", ev.getVisitaInopinadaByResultado(id));
-            } catch (Exception e) {
-            }
+                EvaluacionDAO ev1 = new EvaluacionDAO();
+                request.setAttribute("cuestionario", ev1.getCuestionarioByResultado(id));
+                EvaluacionDAO ev2 = new EvaluacionDAO();
+                request.setAttribute("detallecurso", ev2.getDetalleCursoByResultado(id));
+                EvaluacionDAO ev3 = new EvaluacionDAO();
+                request.setAttribute("visitainopinada", ev3.getVisitaInopinadaByResultado(id));
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             dispatcher = request.getRequestDispatcher("/Revision.jsp");
             dispatcher.forward(request, response);
             break;

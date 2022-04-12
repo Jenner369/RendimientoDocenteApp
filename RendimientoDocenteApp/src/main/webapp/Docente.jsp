@@ -31,7 +31,7 @@ background-size: cover; background-position: center center; background-attachmen
                     </thead>
                     <tbody>
                         <%
-                            List<Docente> Docentes = Utils.coalesce((List<Docente>)request.getAttribute("lista_resultados"), new ArrayList<Docente>());
+                            List<Docente> Docentes = Utils.coalesce((List<Docente>)request.getAttribute("lista_docentes"), new ArrayList<Docente>());
                         %>
                         
                         <% for (int i = 0; i < Docentes.size(); i++) { %>

@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class cnx {
 
-    private String USERNAME = "hr";
-    private String PASSWORD = "hr";
+    private String USERNAME = "evaldoc";
+    private String PASSWORD = "1234";
     private String HOST = "localhost";
     private String PORT = "1521";
     private String DATABASE = "veterinaria";
