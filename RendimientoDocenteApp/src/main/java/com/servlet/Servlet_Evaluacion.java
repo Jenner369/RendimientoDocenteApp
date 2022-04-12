@@ -129,6 +129,19 @@ public class Servlet_Evaluacion extends HttpServlet {
             dispatcher = request.getRequestDispatcher("/index.html");
             dispatcher.forward(request, response);
             break;
+            case "mostrar_cuestionario":
+                    try {
+                EvaluacionDAO ev = new EvaluacionDAO();
+                int id = (Integer) request.getAttribute("idResultado");
+                request.setAttribute("cuestionario", ev.getCuestionarioByResultado(id));
+                request.setAttribute("lista_detallecuestionarios", ev.getDetalleCuestionariosByResultado(id));
+                request.setAttribute("detallecurso", ev.getDetalleCursoByResultado(id));
+                request.setAttribute("visitainopinada", ev.getVisitaInopinadaByResultado(id));
+            } catch (Exception e) {
+            }
+            dispatcher = request.getRequestDispatcher("/Cuestionario.jsp");
+            dispatcher.forward(request, response);
+            break;
         }
 
         //processRequest(request, response);
